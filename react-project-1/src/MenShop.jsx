@@ -21,6 +21,7 @@ const MenShop = () => {
   const [isCartOpen,setIsCartOpen] = useState(false);
   const [isUserMenuOpen,setIsUserMenuOpen] = useState(false);
   const [isWishlistModalOpen,setIsWishlistModalOpen] = useState(false);
+  const [notification,setNotification] = useState("");
 
   useEffect(() => {
     setCurrentPage(1);
@@ -105,6 +106,13 @@ const MenShop = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [activeCategory, sortBy, priceRange, selectedBrands, searchQuery])
+
+  const showNotification = (message) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification("");
+    }, 3000);
+  };
   
   const handleBrandChange = (brand) => {
     setSelectedBrands(prev =>
@@ -112,22 +120,59 @@ const MenShop = () => {
     );
   };
 
-  const addToCart = (product) => {
+  const handleAddToCart = (product) => {
     setCart(prev => {
       const existing = prev.find(item => item.id === product.id);
       if(existing) return prev.map(item => item.id === product.id ? {...item, qty: item.qty + 1} : item);
       return [...prev, {...product, qty: 1}];
     });
+    showNotification(`${product.name} added to cart!`);
     setIsCartOpen(true);
   };
 
   const removeFromCart = (id) => setCart(prev => prev.filter(item => item.id !== id));
 
-  const toggleWishlist = (product) => {
+
+  const updateQuantity = (id, amount) => {
+    setCart(prev => {
+      return prev
+        .map(item => {
+          if (item.id === id) {
+            return { ...item, qty: item.qty + amount };
+          }
+          return item;
+        })
+        .filter(item => item.qty > 0);
+    });
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('.user-dropdown') && !e.target.closest('.nav-icon')) {
+        setIsUserMenuOpen(false);
+      }
+      if (!e.target.closest('.search-container')) {
+        setIsSearchOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleToggleWishlist = (product) => {
+    const isAdding = !wishlist.find(item => item.id === product.id);
     setWishlist(prev => {
-      if (prev.find(item => item.id === product.id)) return prev.filter(item => item.id !== product.id);
+      if(!isAdding) return prev.filter(item => item.id !== product.id);
       return [...prev, product];
     });
+
+    if(isAdding) {
+      showNotification(`${product.name} added to wishlist!`);
+    } 
+    else {
+      showNotification(`${product.name} removed from wishlist.`);
+    }
   };
  
   let filteredProducts = products.filter(product => {
@@ -157,6 +202,8 @@ const MenShop = () => {
           cartCount={cart.reduce((sum,item) => sum + item.qty , 0)}
           toggleCart={() => setIsCartOpen(true)}
           toggleUserMenu={() => setIsUserMenuOpen(!isUserMenuOpen)}
+          toggleWishlistModal={() => setIsWishlistModalOpen(true)}
+          wishlistCount={wishlist.length}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           isSearchOpen={isSearchOpen}
@@ -166,16 +213,13 @@ const MenShop = () => {
         {isUserMenuOpen && (
           <div className="user-dropdown">
             <div className="user-info">
-              <h4>My Account</h4>
+              <h4>Akash Sarkar</h4>
               <p>Welcome back!</p>
             </div>
-
             <ul>
               <li>My Profile</li>
               <li>My Orders</li>
-              <li onClick={() => {setIsWishlistModalOpen(true); setIsUserMenuOpen(false); }}>
-                Wishlist <span className="wishlist-count">{wishlist.length}</span>
-              </li>
+              <li>Subscriptions</li>
               <li className="logout-btn">Log Out</li>
             </ul>
           </div>
@@ -303,7 +347,13 @@ const MenShop = () => {
               currentDisplayedProducts.map((product, index) => (
                 <div className="shoe-card" key={product.id} style={{ animationDelay: `${index * 0.05}s` }}>
                   <div className="card-top">
-                    <Heart size={20} className="heart-icon" />
+                    <Heart 
+                      size={24} 
+                      className="heart-icon" 
+                      fill={wishlist.some(item => item.id === product.id) ? "#ff3300" : "transparent"}
+                      color={wishlist.some(item => item.id === product.id) ? "#ff3300" : "#ccc"}
+                      onClick={() => handleToggleWishlist(product)} 
+                    />
                     <img src={product.img} alt={product.name} />
                   </div>
                   <div className="card-info">
@@ -318,6 +368,7 @@ const MenShop = () => {
                       <span className="review-count">({product.reviews})</span>
                     </div>
                   </div>
+                  <button className="add-to-cart-btn" onClick={() => handleAddToCart(product)}>ADD TO CART</button>
                 </div>
               ))
             ) : (
@@ -386,7 +437,12 @@ const MenShop = () => {
                   <div className="cart-item-details">
                     <h4>{item.name}</h4>
                     <p className="cart-item-price">${item.price}</p>
-                    <p className="cart-item-qty">Qty : {item.qty}</p>
+                      
+                    <div className="qty-controls">
+                      <button onClick={() => updateQuantity(item.id, -1)}>-</button>
+                      <span>{item.qty}</span>
+                      <button onClick={() => updateQuantity(item.id, 1)}>+</button>
+                    </div>
                   </div>
                   <Trash2 size={18} className="remove-item-icon" onClick={() => removeFromCart(item.id)}/>
                 </div>
@@ -420,13 +476,19 @@ const MenShop = () => {
                     <div className="wishlist-details">
                       <h4>{item.name}</h4>
                       <p>${item.price}</p>
-                      <button onClick={() => { addToCart(item); toggleWishlist(item); }}>Move To Cart</button>
+                      <button onClick={() => { handleAddToCart(item); handleToggleWishlist(item); }}>Move To Cart</button>
                     </div>
                   </div>
                 ))
               )}
             </div>
           </div>
+        </div>
+      )}
+
+      {notification && (
+        <div className="notification-toast">
+          {notification}
         </div>
       )}
 

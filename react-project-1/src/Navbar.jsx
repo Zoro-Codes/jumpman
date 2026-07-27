@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from 'react-router-dom';
 import myLogoImage from './assets/nav-logo.png';
-import { Search, ShoppingCart, User } from 'lucide-react';
+import { Search, ShoppingCart, User,Heart } from 'lucide-react';
 import './App.css'; 
 
 const Navbar = ({ 
@@ -11,7 +11,9 @@ const Navbar = ({
   searchQuery, 
   setSearchQuery, 
   isSearchOpen, 
-  setIsSearchOpen 
+  setIsSearchOpen,
+  wishlistCount, 
+  toggleWishlistModal
 }) => {
     return(
         <nav className="hero-nav">
@@ -41,22 +43,28 @@ const Navbar = ({
                         />
                     )}
                     <Search 
-                        size={30} 
+                        size={40} 
                         className="nav-icon" 
                         onClick={() => setIsSearchOpen(!isSearchOpen)} 
                     />
                 </div>
 
                 <User 
-                    size={30} 
+                    size={40} 
                     className="nav-icon" 
                     onClick={toggleUserMenu} 
                 />
 
+                <div className="cart-wrapper" onClick={toggleWishlistModal} style={{cursor: 'pointer'}}>
+                    <Heart size={40} className="nav-icon" color="white" />
+                    {wishlistCount > 0 && <span className="cart-badge">{wishlistCount}</span>}
+                </div>
+
                 <div className="cart-wrapper" onClick={toggleCart}>
-                    <ShoppingCart size={30} className="nav-icon" />
+                    <ShoppingCart size={40} className="nav-icon" />
                     {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
                 </div>
+
             </div>
        </nav>
     );
