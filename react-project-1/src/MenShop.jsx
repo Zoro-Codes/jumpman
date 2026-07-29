@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { Heart, ChevronRight, Star, ShieldCheck, RefreshCcw, Truck, X, Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import "./index.css";
 
 const fallbackShoe = "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=600&q=80";
 
@@ -13,6 +15,10 @@ const MenShop = () => {
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [currentPage, setCurrentPage]= useState(1);
   const itemsPerPage=9;
+
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedRating, setSelectedRating] = useState(null);
 
   const [cart,setCart] = useState([]);
   const [wishlist,setWishlist] = useState([]);
@@ -74,34 +80,142 @@ const MenShop = () => {
   }, [heroSlides.length]);
 
   const products = [
-    { id: 1, name: "Air Jordan 1 Retro High OG", brand:"NIKE", price: "12,999", priceNum: 12999, category: "Lifestyle", added: 1, reviews: 128, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701459/Jordan_1_High_lbp057.png" },
-    { id: 2, name: "Air Jordan 4 Retro", brand:"NIKE", price: "11,999", priceNum: 11999, category: "Basketball", added: 5, reviews: 98, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/jordan_4_yd30yf.png" },
-    { id: 3, name: "Air Jordan 3 Retro", brand:"NIKE", price: "10,499", priceNum: 10499, category: "Lifestyle", added: 3, reviews: 76, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/Jordan_3_bfannd.png" },
-    { id: 4, name: "Air Jordan 11 Retro", brand:"NIKE", price: "15,999", priceNum: 15999, category: "Basketball", added: 9, reviews: 64, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_11_vzozv2.png" },
-    { id: 5, name: "Air Jordan 1 Low", brand:"NIKE", price: "8,999", priceNum: 8999, category: "Running", added: 2, reviews: 115, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/jordan_1_low_zbk3ep.png" },
-    { id: 6, name: "Air Jordan 5 Retro", brand:"NIKE", price: "11,499", priceNum: 11499, category: "Basketball", added: 8, reviews: 83, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/jordan_5_yyd5y8.png" },
-    { id: 7, name: "Air Jordan 6 Retro", brand:"NIKE", price: "12,499", priceNum: 12499, category: "Training", added: 4, reviews: 58, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/jordan_6_xmttzp.png" },
-    { id: 8, name: "Air Jordan 12 Retro", brand:"NIKE", price: "13,499", priceNum: 13499, category: "Basketball", added: 7, reviews: 69, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_12_c0hsvw.png" },
-    { id: 9, name: "Air Jordan 13 Retro", brand:"NIKE", price: "11,999", priceNum: 11999, category: "Lifestyle", added: 6, reviews: 74, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png" },
-    { id: 10, name: "Adidas Uomo Own", brand:"ADIDAS", price: "12,999", priceNum: 12999, category: "Lifestyle", added: 6, reviews: 69, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875464/adidas_uomo_lkkojk.png"},
-    { id: 11, name: "Adidas Terrex Skychaser", brand:"ADIDAS", price: "11,999", priceNum: 11999, category: "Basketball", added: 5, reviews: 52, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875464/adidas_Terrex_j9vw8z.png"},
-    { id: 12, name: "Adidas Strutter ", brand:"ADIDAS", price: "11,999", priceNum: 11999, category: "Lifestyle", added: 8, reviews: 67, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_stutter_ova9j4.png"},
-    { id: 13, name: "Adidas Supernova Ease 2", brand:"ADIDAS", price: "10,499", priceNum: 10499, category: "Basketball", added: 4, reviews: 87, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_supernova_ease_2_cjshrv.png"},
-    { id: 14, name: "Adidas Stabil 16", brand:"ADIDAS", price: "15,999", priceNum: 15999, category: "Lifestyle", added: 1, reviews: 92, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_stabil_16_ljlqbe.png"},
-    { id: 15, name: "Adidas Herren Galaxy 7", brand:"ADIDAS", price: "8,999", priceNum: 8999, category: "Basketball", added: 2, reviews: 121, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_herren_galaxy_7_ipz5pn.png"},
-    { id: 16, name: "Adidas Laufschuh Galaxy 7", brand:"ADIDAS", price: "11,499", priceNum: 11499, category: "Running", added: 10, reviews: 77, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_laufschuh__galaxy_7_wfq9bn.png"},
-    { id: 17, name: "Adidas Superstar II", brand:"ADIDAS", price: "12,499", priceNum: 12499, category: "Training", added: 6, reviews: 37, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875464/adidas_superstar_II_phmphr.png"},
-    { id: 18, name: "Adidas Bounce 2.0", brand:"ADIDAS", price: "13,499", priceNum: 13499, category: "Basketball", added: 4, reviews: 48, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_bounce_2_0_fkkuqg.png"},
-    { id: 19, name: "Air Jordan 13 Retro", brand:"PUMA", price: "11,999", priceNum: 11999, category: "Lifestyle", added: 2, reviews: 59, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png"},
-    { id: 20, name: "Air Jordan 13 Retro", brand:"PUMA", price: "12,999", priceNum: 12999, category: "Lifestyle", added: 9, reviews: 107, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png"},
-    { id: 21, name: "Air Jordan 13 Retro", brand:"PUMA", price: "11,999", priceNum: 11999, category: "Basketball", added: 5, reviews: 62, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png"},
-    { id: 22, name: "Air Jordan 13 Retro", brand:"PUMA", price: "10,499", priceNum: 10499, category: "Lifestyle", added: 7, reviews: 94, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png"},
-    { id: 23, name: "Air Jordan 13 Retro", brand:"PUMA", price: "15,999", priceNum: 15999, category: "Basketball", added: 3, reviews: 45, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png"},
-    { id: 24, name: "Air Jordan 13 Retro", brand:"PUMA", price: "8,999", priceNum: 8999, category: "Running", added: 11, reviews: 103, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png"},
-    { id: 25, name: "Air Jordan 13 Retro", brand:"PUMA", price: "11,499", priceNum: 11499, category: "Basketball", added: 4, reviews: 78, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png"},
-    { id: 26, name: "Air Jordan 13 Retro", brand:"PUMA", price: "12,499", priceNum: 12499, category: "Training", added: 1, reviews: 71, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png"},
-    { id: 27, name: "Air Jordan 13 Retro", brand:"PUMA", price: "13,499", priceNum: 13499, category: "Basketball", added: 8, reviews: 88, img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png"},
-  ];
+    { 
+      id: 1, name: "Air Jordan 1 Retro High OG", brand:"NIKE", price: "12,999", priceNum: 12999, category: "Lifestyle", added: 1, reviews: 128, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701459/Jordan_1_High_lbp057.png",
+      rating: 5, color: "#000000", sizes: [7, 8, 9, 10, 11] 
+    },
+    { 
+      id: 2, name: "Air Jordan 4 Retro", brand:"NIKE", price: "11,999", priceNum: 11999, category: "Basketball", added: 5, reviews: 98, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/jordan_4_yd30yf.png",
+      rating: 4, color: "#FFFFFF", sizes: [8, 9, 10, 11, 12, 13] 
+    },
+    { 
+      id: 3, name: "Air Jordan 3 Retro", brand:"NIKE", price: "10,499", priceNum: 10499, category: "Lifestyle", added: 3, reviews: 76, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/Jordan_3_bfannd.png",
+      rating: 4, color: "#808080", sizes: [6, 7, 8, 9, 10] 
+    },
+    { 
+      id: 4, name: "Air Jordan 11 Retro", brand:"NIKE", price: "15,999", priceNum: 15999, category: "Basketball", added: 9, reviews: 64, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_11_vzozv2.png",
+      rating: 5, color: "#000000", sizes: [9, 10, 11, 12] 
+    },
+    { 
+      id: 5, name: "Air Jordan 1 Low", brand:"NIKE", price: "8,999", priceNum: 8999, category: "Running", added: 2, reviews: 115, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/jordan_1_low_zbk3ep.png",
+      rating: 3, color: "#FF4500", sizes: [6, 7, 8, 9] 
+    },
+    { 
+      id: 6, name: "Air Jordan 5 Retro", brand:"NIKE", price: "11,499", priceNum: 11499, category: "Basketball", added: 8, reviews: 83, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/jordan_5_yyd5y8.png",
+      rating: 4, color: "#FFFFFF", sizes: [7, 8, 9, 10, 11] 
+    },
+    { 
+      id: 7, name: "Air Jordan 6 Retro", brand:"NIKE", price: "12,499", priceNum: 12499, category: "Training", added: 4, reviews: 58, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/jordan_6_xmttzp.png",
+      rating: 4, color: "#000000", sizes: [8, 9, 10, 11, 12] 
+    },
+    { 
+      id: 8, name: "Air Jordan 12 Retro", brand:"NIKE", price: "13,499", priceNum: 13499, category: "Basketball", added: 7, reviews: 69, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_12_c0hsvw.png",
+      rating: 5, color: "#0000FF", sizes: [9, 10, 11, 12, 13] 
+    },
+    { 
+      id: 9, name: "Air Jordan 13 Retro", brand:"NIKE", price: "11,999", priceNum: 11999, category: "Lifestyle", added: 6, reviews: 74, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png",
+      rating: 3, color: "#008000", sizes: [6, 7, 8, 9, 10, 11] 
+    },
+    { 
+      id: 10, name: "Adidas Uomo Own", brand:"ADIDAS", price: "12,999", priceNum: 12999, category: "Lifestyle", added: 6, reviews: 69, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875464/adidas_uomo_lkkojk.png",
+      rating: 4, color: "#D2B48C", sizes: [8, 9, 10, 11] 
+    },
+    { 
+      id: 11, name: "Adidas Terrex Skychaser", brand:"ADIDAS", price: "11,999", priceNum: 11999, category: "Basketball", added: 5, reviews: 52, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875464/adidas_Terrex_j9vw8z.png",
+      rating: 4, color: "#808080", sizes: [7, 8, 9, 10, 11, 12] 
+    },
+    { 
+      id: 12, name: "Adidas Strutter ", brand:"ADIDAS", price: "11,999", priceNum: 11999, category: "Lifestyle", added: 8, reviews: 67, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_stutter_ova9j4.png",
+      rating: 3, color: "#FFFFFF", sizes: [6, 7, 8] 
+    },
+    { 
+      id: 13, name: "Adidas Supernova Ease 2", brand:"ADIDAS", price: "10,499", priceNum: 10499, category: "Basketball", added: 4, reviews: 87, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_supernova_ease_2_cjshrv.png",
+      rating: 5, color: "#000000", sizes: [9, 10, 11, 12] 
+    },
+    { 
+      id: 14, name: "Adidas Stabil 16", brand:"ADIDAS", price: "15,999", priceNum: 15999, category: "Lifestyle", added: 1, reviews: 92, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_stabil_16_ljlqbe.png",
+      rating: 5, color: "#0000FF", sizes: [8, 9, 10, 11] 
+    },
+    { 
+      id: 15, name: "Adidas Herren Galaxy 7", brand:"ADIDAS", price: "8,999", priceNum: 8999, category: "Basketball", added: 2, reviews: 121, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_herren_galaxy_7_ipz5pn.png",
+      rating: 4, color: "#008000", sizes: [7, 8, 9, 10, 11, 12] 
+    },
+    { 
+      id: 16, name: "Adidas Laufschuh Galaxy 7", brand:"ADIDAS", price: "11,499", priceNum: 11499, category: "Running", added: 10, reviews: 77, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_laufschuh__galaxy_7_wfq9bn.png",
+      rating: 4, color: "#FFC0CB", sizes: [6, 7, 8, 9] 
+    },
+    { 
+      id: 17, name: "Adidas Superstar II", brand:"ADIDAS", price: "12,499", priceNum: 12499, category: "Training", added: 6, reviews: 37, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875464/adidas_superstar_II_phmphr.png",
+      rating: 3, color: "#FFFFFF", sizes: [9, 10, 11, 12, 13] 
+    },
+    { 
+      id: 18, name: "Adidas Bounce 2.0", brand:"ADIDAS", price: "13,499", priceNum: 13499, category: "Basketball", added: 4, reviews: 48, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_bounce_2_0_fkkuqg.png",
+      rating: 5, color: "#FF4500", sizes: [7, 8, 9, 10] 
+    },
+    { 
+      id: 19, name: "Air Jordan 13 Retro", brand:"PUMA", price: "11,999", priceNum: 11999, category: "Lifestyle", added: 2, reviews: 59, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png",
+      rating: 4, color: "#000000", sizes: [8, 9, 10, 11, 12] 
+    },
+    { 
+      id: 20, name: "Air Jordan 13 Retro", brand:"PUMA", price: "12,999", priceNum: 12999, category: "Lifestyle", added: 9, reviews: 107, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png",
+      rating: 5, color: "#808080", sizes: [6, 7, 8, 9, 10] 
+    },
+    { 
+      id: 21, name: "Air Jordan 13 Retro", brand:"PUMA", price: "11,999", priceNum: 11999, category: "Basketball", added: 5, reviews: 62, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png",
+      rating: 3, color: "#D2B48C", sizes: [10, 11, 12, 13] 
+    },
+    { 
+      id: 22, name: "Air Jordan 13 Retro", brand:"PUMA", price: "10,499", priceNum: 10499, category: "Lifestyle", added: 7, reviews: 94, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png",
+      rating: 4, color: "#FFFFFF", sizes: [7, 8, 9, 10, 11] 
+    },
+    { 
+      id: 23, name: "Air Jordan 13 Retro", brand:"PUMA", price: "15,999", priceNum: 15999, category: "Basketball", added: 3, reviews: 45, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png",
+      rating: 5, color: "#000000", sizes: [9, 10, 11, 12] 
+    },
+    { 
+      id: 24, name: "Air Jordan 13 Retro", brand:"PUMA", price: "8,999", priceNum: 8999, category: "Running", added: 11, reviews: 103, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png",
+      rating: 4, color: "#FF4500", sizes: [6, 7, 8, 9] 
+    },
+    { 
+      id: 25, name: "Air Jordan 13 Retro", brand:"PUMA", price: "11,499", priceNum: 11499, category: "Basketball", added: 4, reviews: 78, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png",
+      rating: 3, color: "#0000FF", sizes: [8, 9, 10, 11] 
+    },
+    { 
+      id: 26, name: "Air Jordan 13 Retro", brand:"PUMA", price: "12,499", priceNum: 12499, category: "Training", added: 1, reviews: 71, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png",
+      rating: 4, color: "#008000", sizes: [7, 8, 9, 10, 11, 12] 
+    },
+    { 
+      id: 27, name: "Air Jordan 13 Retro", brand:"PUMA", price: "13,499", priceNum: 13499, category: "Basketball", added: 8, reviews: 88, 
+      img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701417/Jordan_13_v8kfso.png",
+      rating: 5, color: "#FFC0CB", sizes: [6, 7, 8, 9, 10] 
+    }
+];
 
   useEffect(() => {
     setCurrentPage(1);
@@ -180,7 +294,10 @@ const MenShop = () => {
     const priceMatch = product.priceNum <= priceRange;
     const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(product.brand);
     const searchMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return categoryMatch && priceMatch && brandMatch && searchMatch;
+    const sizeMatch = selectedSizes.length === 0 || product.sizes.some( s => selectedSizes.includes(s));
+    const colorMatch = selectedColors.length === 0 || selectedColors.includes(product.color);
+    const ratingMatch = selectedRating === null || product.rating >= selectedRating;
+    return categoryMatch && priceMatch && brandMatch && searchMatch && sizeMatch && colorMatch && ratingMatch;
   });
 
   filteredProducts.sort((a, b) => {
@@ -194,6 +311,22 @@ const MenShop = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentDisplayedProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
   const cartTotal = cart.reduce((total, item) => total + (item.priceNum * item.qty), 0);
+
+  const toggleSize = (size) => {
+    setSelectedSizes(prev =>
+      prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]
+    );
+  };
+
+  const toggleColor = (color) => {
+    setSelectedSizes(prev =>
+      prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]
+    );
+  };
+
+  const toggleRating = (rating) => {
+    setSelectedRating(prev => prev === rating ? null : rating);
+  };
 
   return (
     <div className="mens-page">
@@ -212,15 +345,38 @@ const MenShop = () => {
 
         {isUserMenuOpen && (
           <div className="user-dropdown">
-            <div className="user-info">
-              <h4>Akash Sarkar</h4>
-              <p>Welcome back!</p>
+            <div className="user-dropdown-header">
+              <img 
+                src="https://res.cloudinary.com/ni0rf0la/image/upload/v1784529882/christopher-campbell-rDEOVtE7vOs-unsplash-removebg-preview_hnuwon.png" 
+                alt="Profile Avatar"
+                className='user-avatar' 
+              />
+
+              <div className="user-info">
+                <h4>User Name</h4>
+                <p>Welcome back!</p>
+              </div>
             </div>
-            <ul>
-              <li>My Profile</li>
-              <li>My Orders</li>
-              <li>Subscriptions</li>
-              <li className="logout-btn">Log Out</li>
+            
+            <ul className='user-menu-list'>
+              <li>
+                <Link to="/profile">My Profile</Link>
+              </li>
+              <li>
+                <Link to="/orders">My Orders</Link>
+              </li>
+              <li>
+                <Link to="/subscription">Subscriptions</Link>
+              </li>
+              <li 
+                className="logout-btn"
+                onClick={() => {
+                  alert("You have been logged out!")
+                  setIsUserMenuOpen(false);
+                }}
+              >
+                Log Out
+              </li>
             </ul>
           </div>
         )}
@@ -275,7 +431,15 @@ const MenShop = () => {
           <div className="filter-group">
             <h4 className="filter-subheading">SIZE</h4>
             <div className="size-grid">
-              {[6,7,8,9,10,11,12,13].map(size => <button key={size} className="size-btn">{size}</button>)}
+              {[6,7,8,9,10,11,12,13].map(size => (
+                <button 
+                  key={size} 
+                  className={`size-btn ${selectedSizes.includes(size) ? 'active' : ''}`}
+                  onClick = {() => toggleSize(size)}
+                >
+                  {size}
+                </button>
+              ))}
             </div>
             <span className="show-more">+ Show More</span>
           </div>
@@ -291,15 +455,24 @@ const MenShop = () => {
 
           <div className="filter-group">
             <h4 className="filter-subheading">COLOR</h4>
-            <div className="color-swatches">
-              <span className="color-dot" style={{backgroundColor: '#000'}}></span>
+            <div className="color-grid">
+                {['#000', '#fff', '#888', '#ff0000', '#0000ff', '#008000', '#d2b48c', '#ffc0cb'].map(color => (
+                  <button
+                    key={color}
+                    className={`color-swatch ${selectedColors.includes(color) ? 'active' : ''}`}
+                    style={{backgroundColor: color}}
+                    onClick={() => toggleColor(color)}
+                    aria-label={`Select color ${color}`}
+                  />
+                ))}
+              {/* <span className="color-dot" style={{backgroundColor: '#000'}}></span>
               <span className="color-dot" style={{backgroundColor: '#fff', border: '1px solid #ddd'}}></span>
               <span className="color-dot" style={{backgroundColor: '#888'}}></span>
               <span className="color-dot" style={{backgroundColor: '#ff0000'}}></span>
               <span className="color-dot" style={{backgroundColor: '#0000ff'}}></span>
               <span className="color-dot" style={{backgroundColor: '#008000'}}></span>
               <span className="color-dot" style={{backgroundColor: '#d2b48c'}}></span>
-              <span className="color-dot" style={{backgroundColor: '#ffc0cb'}}></span>
+              <span className="color-dot" style={{backgroundColor: '#ffc0cb'}}></span> */}
             </div>
           </div>
 
@@ -318,14 +491,31 @@ const MenShop = () => {
 
           <div className="filter-group">
             <h4 className="filter-subheading">RATING</h4>
-            {[4, 3, 2, 1].map(stars => (
-              <div className="rating-row" key={stars}>
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={14} fill={i < stars ? "#000" : "transparent"} color="#000" />
-                ))}
-                <span>& above</span>
-              </div>
-            ))}
+            <div className="rating-list">
+              {[4, 3, 2, 1].map(rating => (
+                <div
+                  key={rating}
+                  className={`rating-row ${selectedRating === rating ? 'active' : ''}`}
+                  onClick={() => toggleRating(rating)}
+                >
+                  <span className='stars' style={{display: 'flex', gap: '2px', alignItems: 'center'}}>
+                    {[...Array(5)].map((_, index) => {
+                      const isFilled = index < rating;
+                      return (
+                        <Star
+                          key={index}
+                          size={15}
+                          color={isFilled ? "#333" : "#ccc"}
+                          fill={isFilled ? "#333" : "none"}
+                          className='star-icon'
+                        />
+                      );
+                    })}
+                  </span>
+                  <span className="rating-text">& above</span>
+                </div>
+              ))}
+            </div>
           </div>
         </aside>
 

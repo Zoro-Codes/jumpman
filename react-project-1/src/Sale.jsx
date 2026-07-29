@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
+import PromoBanner from "./PromoBanner"
 import Footer from "./Footer";
 import { ArrowRight, Plus, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Sale = () => {
     const [cart,setCart] = useState([]);
@@ -74,6 +76,13 @@ const Sale = () => {
         return () => clearInterval(slideInterval);
     }, [saleSlides.length]);
 
+    const topDeals = [
+        { id: 1, discount: "-40%", name: "Nike Air Force 1 '07", old: "150.00", new: "89.99", img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/jordan_1_low_zbk3ep.png" },
+        { id: 2, discount: "-35%", name: "Air Jordan 1 Retro High", old: "180.00", new: "116.99", img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/Jordan_3_bfannd.png" },
+        { id: 3, discount: "-30%", name: "Adidas Ultraboost 22", old: "170.00", new: "118.99", img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_bounce_2_0_fkkuqg.png" },
+        { id: 4, discount: "-45%", name: "Yeezy Boost 700", old: "200.00", new: "109.99", img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784875463/adidas_stutter_ova9j4.png" }
+    ];
+
     const formatTime = (num) => num.toString().padStart(2, '0');
 
     return (
@@ -138,6 +147,37 @@ const Sale = () => {
                     <span key={index} className={`dot ${index === currentSlide ? 'active-dot' : ''}`} onClick={() => setCurrentSlide(index)}></span>
                 ))}
             </div>
+
+            <div className="top-deals-section">
+                <div className="top-deals-header">
+                    <h2>Top Deals Of The Sale</h2>
+                    <Link to="/all-deals" className="view-all-link">View All Deals <ArrowRight size={16} /></Link>
+                </div>
+
+                <div className="deals-grid">
+                    {topDeals.map(deal => (
+                        <div className="deal-card" key={deal.id}>
+                            <span className="discount-badge">{deal.discount}</span>
+                            <div className="deal-img-container">
+                                <img src={deal.img} alt={deal.name} />
+                            </div>
+                            <div className="deal-info">
+                                <h4>{deal.name}</h4>
+                                <div className="deal-pricing">
+                                    <span className="deal-old">${deal.old}</span>
+                                    <span className="deal-new">${deal.new}</span>
+                                </div>
+                                <button className="add-deal-btn"><Plus size={20} color="white" /></button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            
+            <PromoBanner/>
+
+            <Footer/>
+
         </div>
     );
 };
