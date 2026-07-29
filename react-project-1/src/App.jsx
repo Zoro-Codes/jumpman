@@ -510,6 +510,7 @@
 
  import Home from './Home';
  import MenShop from './MenShop';
+ import Sale from './Sale';
 
  function App(){
    return(
@@ -517,6 +518,7 @@
        <Routes>
          <Route path="/" element={<Home/>}/>
          <Route path="/men" element={<MenShop/>}/>
+         <Route path="/sale" element={<Sale/>}/>
        </Routes>
      </Router>
    );

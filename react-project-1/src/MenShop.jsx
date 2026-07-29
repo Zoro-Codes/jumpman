@@ -476,7 +476,10 @@ const MenShop = () => {
                     <div className="wishlist-details">
                       <h4>{item.name}</h4>
                       <p>${item.price}</p>
-                      <button onClick={() => { handleAddToCart(item); handleToggleWishlist(item); }}>Move To Cart</button>
+                      <div className="wishlist-btn-group">
+                        <button onClick={() => { handleAddToCart(item); handleToggleWishlist(item); }}>Move To Cart</button>
+                        <button className='wishlist-remove-btn' onClick={() => handleToggleWishlist(item)}>Remove</button>
+                      </div>
                     </div>
                   </div>
                 ))

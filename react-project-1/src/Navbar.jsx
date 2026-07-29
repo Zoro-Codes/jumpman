@@ -25,9 +25,9 @@ const Navbar = ({
             <ul className="nav-links">
                 <li><NavLink to="/">HOME</NavLink></li>
                 <li><NavLink to="/men">MEN</NavLink></li>
-                <li>WOMEN</li>
-                <li>KIDS</li>
-                <li>SALE</li>
+                <li><NavLink to="/women">WOMEN</NavLink></li>
+                <li><NavLink to="/kids">KIDS</NavLink></li>
+                <li><NavLink to="/sale">SALE</NavLink></li>
             </ul>
             
             <div className="nav-actions">
@@ -45,6 +45,7 @@ const Navbar = ({
                     <Search 
                         size={40} 
                         className="nav-icon" 
+                        color="white"
                         onClick={() => setIsSearchOpen(!isSearchOpen)} 
                     />
                 </div>
@@ -52,6 +53,7 @@ const Navbar = ({
                 <User 
                     size={40} 
                     className="nav-icon" 
+                    color="white"
                     onClick={toggleUserMenu} 
                 />
 
@@ -61,7 +63,7 @@ const Navbar = ({
                 </div>
 
                 <div className="cart-wrapper" onClick={toggleCart}>
-                    <ShoppingCart size={40} className="nav-icon" />
+                    <ShoppingCart size={40} className="nav-icon" color="white"/>
                     {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
                 </div>
 
