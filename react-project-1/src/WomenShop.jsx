@@ -7,8 +7,7 @@ import "./index.css";
 
 const fallbackShoe = "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=600&q=80";
 
-const MenShop = () => {
-  // Destructure ONLY the global state and functions needed for this specific page
+const WomenShop = () => {
   const {
     wishlist,
     searchQuery,
@@ -18,7 +17,6 @@ const MenShop = () => {
     handleToggleWishlist
   } = useShop();
 
-  // Local state for MenShop filtering and UI
   const [activeCategory, setActiveCategory] = useState("All Men");
   const [sortBy, setSortBy] = useState("Newest");
   const [priceRange, setPriceRange] = useState(19999);
@@ -37,7 +35,7 @@ const MenShop = () => {
 
   const heroSlides = [
     {
-      id: 1, brand: "Men", title: "MEN'S", highlight: "COLLECTION", subtext: "Step up your game with the latest sneakers for men.", bgText: "JUMPMAN", img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784872352/men-hero_tc8mfl.png"
+      id: 1, brand: "Women", title: "WOMEN'S", highlight: "COLLECTION", subtext: "Step up your game with the latest sneakers for men.", bgText: "JUMPMAN", img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784872352/men-hero_tc8mfl.png"
     },
     {
       id: 2, brand: "Nike", title: "NIKE", highlight: "EXCLUSIVES", subtext: "Experience the innovation of Nike running and lifestyle.", bgText: "NIKE", img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784872352/nike_uxssta.png"
@@ -376,4 +374,4 @@ const MenShop = () => {
   );
 };
 
-export default MenShop;
+export default WomenShop;

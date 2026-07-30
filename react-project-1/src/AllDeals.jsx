@@ -1,17 +1,12 @@
-import React, {useState} from "react";
+import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Plus } from "lucide-react";
+import { useShop } from "./ShopContext"; // <-- Import context
 
 const AllDeals = () => {
-    const [cart,setCart] = useState([]);
-    const [wishlist,setWishlist] = useState([]);
-    const [searchQuery,setSearchQuery] = useState("");
-    const [isSearchOpen,setIsSearchOpen] = useState(false);
-    const [isCartOpen,setIsCartOpen] = useState(false);
-    const [isUserMenuOpen,setIsUserMenuOpen] = useState(false);
-    const [isWishlistModalOpen,setIsWishlistModalOpen] = useState(false);
-    // const [notification,setNotification] = useState("");
+    // Pull the add to cart function from your global state
+    const { handleAddToCart } = useShop();
 
     const allDeals = [
         { id: 1, discount: "-40%", name: "Nike Air Force 1 '07", old: "150.00", new: "89.99", img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1784701416/jordan_1_low_zbk3ep.png" },
@@ -27,17 +22,8 @@ const AllDeals = () => {
     return (
         <div className="sale-page-wrapper">
             <div className="sale-nav-container">
-                <Navbar
-                    cartCount={0}
-                    toggleCart={() => setIsCartOpen(true)}
-                    toggleUserMenu={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    toggleWishlistModal={() => setIsWishlistModalOpen(true)}
-                    wishlistCount={0}
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                    isSearchOpen={isSearchOpen}
-                    setIsSearchOpen={setIsSearchOpen}
-                />
+                {/* Navbar now handles all its logic internally via Context */}
+                <Navbar />
             </div>
 
             <main style={{padding: '60px 5%', minHeight: '60vh'}}>
@@ -45,7 +31,6 @@ const AllDeals = () => {
                     ALL <span className="highlight-red">DEALS</span>
                 </h2>
             
-
                 <div className="deals-grid">
                     {allDeals.map(deal => (
                         <div className="deal-card" key={deal.id}>
@@ -59,7 +44,16 @@ const AllDeals = () => {
                                     <span className="deal-old">${deal.old}</span>
                                     <span className="deal-new">${deal.new}</span>
                                 </div>
-                                <button className="add-deal-btn"><Plus size={20} color="white" /></button>
+                                <button 
+                                  className="add-deal-btn"
+                                  onClick={() => handleAddToCart({
+                                      ...deal,
+                                      price: deal.new,
+                                      priceNum: parseFloat(deal.new)
+                                  })}
+                                >
+                                  <Plus size={20} color="white" />
+                                </button>
                             </div>
                         </div>
                     ))}

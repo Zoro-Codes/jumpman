@@ -4,16 +4,11 @@ import PromoBanner from "./PromoBanner"
 import Footer from "./Footer";
 import { ArrowRight, Plus, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useShop } from "./ShopContext"; // <-- Import context
 
 const Sale = () => {
-    const [cart,setCart] = useState([]);
-    const [wishlist,setWishlist] = useState([]);
-    const [searchQuery,setSearchQuery] = useState("");
-    const [isSearchOpen,setIsSearchOpen] = useState(false);
-    const [isCartOpen,setIsCartOpen] = useState(false);
-    const [isUserMenuOpen,setIsUserMenuOpen] = useState(false);
-    const [isWishlistModalOpen,setIsWishlistModalOpen] = useState(false);
-    const [notification,setNotification] = useState("");
+    // Pull the add to cart function from your global state
+    const { handleAddToCart } = useShop(); 
 
     const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -47,7 +42,6 @@ const Sale = () => {
             newPrice: "110.00",
             img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1785222364/air_jordan_xxxvi_xmq5cj.png"
         },
-
         {
             id: 2,
             title: "Weekend Deals",
@@ -57,7 +51,6 @@ const Sale = () => {
             newPrice: "133.00",
             img: "https://res.cloudinary.com/ni0rf0la/image/upload/v1785222803/adidas_ultra_boost_so3inl.png"
         },
-
         {
             id: 3,
             title: "Flash Drop",
@@ -88,17 +81,8 @@ const Sale = () => {
     return (
         <div className="sale-page-wrapper">
             <div className="sale-nav-container">
-                <Navbar
-                    cartCount={cart.reduce((sum,item) => sum + item.qty , 0)}
-                    toggleCart={() => setIsCartOpen(true)}
-                    toggleUserMenu={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    toggleWishlistModal={() => setIsWishlistModalOpen(true)}
-                    wishlistCount={wishlist.length}
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                    isSearchOpen={isSearchOpen}
-                    setIsSearchOpen={setIsSearchOpen}
-                />
+                {/* Navbar now handles all its logic internally via Context */}
+                <Navbar />
             </div>
 
             <div className="sale-hero-container">
@@ -167,7 +151,16 @@ const Sale = () => {
                                     <span className="deal-old">${deal.old}</span>
                                     <span className="deal-new">${deal.new}</span>
                                 </div>
-                                <button className="add-deal-btn"><Plus size={20} color="white" /></button>
+                                <button 
+                                  className="add-deal-btn"
+                                  onClick={() => handleAddToCart({
+                                      ...deal,
+                                      price: deal.new,
+                                      priceNum: parseFloat(deal.new)
+                                  })}
+                                >
+                                  <Plus size={20} color="white" />
+                                </button>
                             </div>
                         </div>
                     ))}
@@ -175,9 +168,7 @@ const Sale = () => {
             </div>
             
             <PromoBanner/>
-
             <Footer/>
-
         </div>
     );
 };

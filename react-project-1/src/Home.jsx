@@ -11,7 +11,7 @@ import Footer from './Footer';
 
 const Home = () => {
     return(
-        <div className="app=container">
+        <div className="app-container">
             <div className="hero-bg-wrapper">
                 <div className="bg-watermark">JORDAN</div>
 
